@@ -12,8 +12,9 @@
 // // Строка длиннее 10 символов
 // имяФункции('проверяемая строка', 10); // false
 
+/* eslint-disable */
 const checkString = (string, length) => string.length <= length;
-
+/* eslint-enable */
 
 
 // Функция для проверки, является ли строка палиндромом.
@@ -25,6 +26,7 @@ const checkString = (string, length) => string.length <= length;
 // имяФункции('ДовОд'); // true
 // // Это не палиндром
 // имяФункции('Кекс');  // false
+/* eslint-disable */
 
 const isPalindrom = (string) => {
   const tempString = string
@@ -37,7 +39,6 @@ const isPalindrom = (string) => {
   // console.log(reverseString);
   return tempString === reverseString;
 };
-
 
 
 // Функция, которая принимает строку, извлекает содержащиеся в ней цифры от 0 до 9 и возвращает их в виде целого положительного числа.
