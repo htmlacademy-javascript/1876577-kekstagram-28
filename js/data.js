@@ -16,7 +16,7 @@ const PHOTO_DESCRIPTIONS = [
   'Работать из дома - лучшее решение!',
   'Встретил закат на любимом месте',
   'Сегодняшний тренировочный день был на высоте!',
-  'Прекрасный день с друзьями в парке'
+  'Прекрасный день с друзьями в парке',
 ];
 
 const COMMENTS_MESSAGES = [
@@ -25,29 +25,20 @@ const COMMENTS_MESSAGES = [
   'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
   'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
   'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
-  'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
+  'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!',
 ];
 
-const NAMES = [
-  'Теодор',
-  'Александр',
-  'Тимур',
-  'Константин',
-  'Иракли',
-  'Марк'
-];
+const NAMES = ['Теодор', 'Александр', 'Тимур', 'Константин', 'Иракли', 'Марк'];
 
-
-function getRandomInteger = (a, b) => {
+function getRandomInteger(a, b) {
   const lower = Math.ceil(Math.min(a, b));
   const upper = Math.floor(Math.max(a, b));
   const result = Math.random() * (upper - lower + 1) + lower;
   return Math.floor(result);
 }
 
-const getRandomArrayElement = (array) => {
-  let [getRandomInteger(0, array.length - 1)];
-}
+const getRandomArrayElement = (array) =>
+  array[getRandomInteger(0, array.length - 1)];
 
 const createIdgenerator = () => {
   let lastgenerateId = 0;
@@ -55,42 +46,39 @@ const createIdgenerator = () => {
   return () => {
     lastgenerateId += 1;
     return lastgenerateId;
-  }
-}
-
+  };
+};
 
 const generateCommentId = createIdgenerator();
-
+const generateImageId = createIdgenerator();
 
 const createMessage = () =>
   Array.from({ length: getRandomInteger(1, 2) }, () =>
-    getRandomArrayElement(COMMENTS_MESSAGES)).join('');
+    getRandomArrayElement(COMMENTS_MESSAGES)
+  ).join('');
 
+function createComment() {
+  return {
+    id: generateCommentId(),
+    avatar: `img/avatar-${getRandomInteger(1, AVATAR_COUNT)}.svg`,
+    message: createMessage(),
+    name: getRandomArrayElement(NAMES),
+  };
+}
 
-function createComment = () => ({
-  id: getRandomComment(),
-  avatar: `img/avatar-${getRandomInteger(1, AVATAR_COUNT)}.svg`,
-  message: createMessage(),
-  name: getRandomArrayElement(NAMES),
-})
+const createPicture = () => {
+  const index = generateImageId();
+  return {
+    id: index,
+    url: `photos/${index}.jpg`,
+    description: getRandomArrayElement(PHOTO_DESCRIPTIONS),
+    likes: getRandomInteger(LIKE_MIN, LIKE_MAX),
+    comments: Array.from(
+      { length: getRandomInteger(0, COMMENT_COUNT) },
+      createComment
+    ),
+  }
+};
 
-
-const createPicture = (index) => ({
-  id: index,
-  url: `photos/${index}.jpg`,
-  description: getRandomArrayElement(PHOTO_DESCRIPTIONS),
-  likes: getRandomInteger(LIKE_MIN, LIKE_MAX),
-  comments: Array.from(
-    {length: getRandomInteger(0, COMMENT_COUNT)},
-    createComment
-  )
-})
-
-const getPictures = () =>
-  Array.from({ length: PHOTO_COUNT}, (_, pictureIndex) =>
-    createPicture(pictureIndex + 1)
-);
-
-getPictures();
-
-export const photosArray = Array.from({length: PHOTO_COUNT}, createPhotoData);
+export const getPictures = () =>
+  Array.from({ length: PHOTO_COUNT }, createPicture);
