@@ -1,7 +1,9 @@
+import {getRandomInteger, getRandomArrayElement, createIdgenerator} from './util.js';
+
 const PHOTO_COUNT = 25;
 const LIKE_MIN = 15;
 const LIKE_MAX = 15;
-const AVATAR_COUNT = 10;
+const AVATAR_COUNT = 6;
 const COMMENT_COUNT = 20;
 
 const PHOTO_DESCRIPTIONS = [
@@ -29,25 +31,6 @@ const COMMENTS_MESSAGES = [
 ];
 
 const NAMES = ['Теодор', 'Александр', 'Тимур', 'Константин', 'Иракли', 'Марк'];
-
-function getRandomInteger(a, b) {
-  const lower = Math.ceil(Math.min(a, b));
-  const upper = Math.floor(Math.max(a, b));
-  const result = Math.random() * (upper - lower + 1) + lower;
-  return Math.floor(result);
-}
-
-const getRandomArrayElement = (array) =>
-  array[getRandomInteger(0, array.length - 1)];
-
-const createIdgenerator = () => {
-  let lastgenerateId = 0;
-
-  return () => {
-    lastgenerateId += 1;
-    return lastgenerateId;
-  };
-};
 
 const generateCommentId = createIdgenerator();
 const generateImageId = createIdgenerator();
@@ -77,7 +60,7 @@ const createPicture = () => {
       { length: getRandomInteger(0, COMMENT_COUNT) },
       createComment
     ),
-  }
+  };
 };
 
 export const getPictures = () =>
