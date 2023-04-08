@@ -1,9 +1,9 @@
 import {getPictures} from './data.js';
 import './photos.js';
+import './full-size-photo.js';
 
-
-const photosArray = getPictures();
+// const photosArray = getPictures();
 
 
 /* eslint-disable */
-console.log(photosArray);
+console.log(getPictures());
