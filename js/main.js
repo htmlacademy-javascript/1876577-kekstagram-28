@@ -1,9 +1,18 @@
-import {getPictures} from './data.js';
-import './photos.js';
-import './full-size-photo.js';
 
-// const photosArray = getPictures();
+import { createSimilarPhoto } from './photos.js';
+import { similarListElement, similarPhotos } from './constants.js';
+import { setBigPictureData, openBigPicture } from './full-size-photo.js';
 
+const similarListFragment = document.createDocumentFragment();
 
-/* eslint-disable */
-console.log(getPictures());
+function handleOpenPopup(dataPhoto) {
+  setBigPictureData(dataPhoto);
+  openBigPicture();
+}
+
+similarPhotos.forEach((photo) => {
+  similarListFragment.append(createSimilarPhoto(photo, handleOpenPopup));
+});
+
+similarListElement.append(similarListFragment);
+
