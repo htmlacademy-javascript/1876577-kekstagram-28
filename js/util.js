@@ -10,7 +10,6 @@ const getRandomArrayElement = (array) =>
 
 const createIdgenerator = () => {
   let lastgenerateId = 0;
-
   return () => {
     lastgenerateId += 1;
     return lastgenerateId;

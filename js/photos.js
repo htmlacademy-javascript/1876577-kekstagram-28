@@ -1,26 +1,15 @@
-import {getPictures} from './data.js';
-
-const similarListElement = document.querySelector('.pictures');
 const similarPhotoTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
-const similarPhotos = getPictures();
-
-const similarListFragment = document.createDocumentFragment();
-
-function createPhoto(photo) {
+export function createSimilarPhoto(dataPhoto, handleOpenPopup) {
   const photoElement = similarPhotoTemplate.cloneNode(true);
-  // photoElement.querySelector('.picture').dataset.id = photo.id;
-  photoElement.querySelector('.picture__img').src = photo.url;
-  photoElement.querySelector('.picture__likes').textContent = photo.likes;
-  photoElement.querySelector('.picture__comments').textContent = photo.comments.length;
+  photoElement.dataset.id = dataPhoto.id;
+  photoElement.querySelector('.picture__img').src = dataPhoto.url;
+  photoElement.querySelector('.picture__likes').textContent = dataPhoto.likes;
+  photoElement.querySelector('.picture__comments').textContent = dataPhoto.comments.length;
 
+  photoElement.addEventListener('click', (evt) => {
+    evt.preventDefault();
+    handleOpenPopup(dataPhoto);
+  });
   return photoElement;
 }
-similarPhotos.forEach((photo) => {
-  const photoElement = createPhoto(photo);
-  similarListFragment.append(photoElement);
-});
-
-similarListElement.append(similarListFragment);
-
-export {similarListElement, similarPhotos};

@@ -1,8 +1,8 @@
 import {getRandomInteger, getRandomArrayElement, createIdgenerator} from './util.js';
 
 const PHOTO_COUNT = 25;
-const LIKE_MIN = 15;
-const LIKE_MAX = 15;
+// const LIKE_MIN = 15;
+// const LIKE_MAX = 15;
 const AVATAR_COUNT = 6;
 const COMMENT_COUNT = 20;
 
@@ -55,7 +55,7 @@ const createPicture = () => {
     id: index,
     url: `photos/${index}.jpg`,
     description: getRandomArrayElement(PHOTO_DESCRIPTIONS),
-    likes: getRandomInteger(LIKE_MIN, LIKE_MAX),
+    likes: getRandomInteger(1, 10),
     comments: Array.from(
       { length: getRandomInteger(0, COMMENT_COUNT) },
       createComment
@@ -63,5 +63,4 @@ const createPicture = () => {
   };
 };
 
-export const getPictures = () =>
-  Array.from({ length: PHOTO_COUNT }, createPicture);
+export const getPictures = () => Array.from({ length: PHOTO_COUNT }, createPicture);
