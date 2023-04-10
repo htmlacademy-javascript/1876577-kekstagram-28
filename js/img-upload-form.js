@@ -1,3 +1,4 @@
+import { MAX_LENGTH_COMMENTS_TEXT } from './constants.js';
 import { isEscapeKey } from './util.js';
 
 const uploadForm = document.querySelector('.img-upload__form');
@@ -14,7 +15,9 @@ const pristine = new Pristine(uploadForm, {
   errorTextParent: 'img-upload__field-wrapper'
 });
 
-pristine.addValidator(hashtagsInput, validateHashtags, 'Неверный формат хэш-тегов или количество хэш-тегов превышает 5');
+pristine.addValidator(hashtagsInput, validateHashtagsFormat, 'Неверный формат хэш-тегов');
+pristine.addValidator(hashtagsInput, validateHashtagsLength, 'Количество хэш-тегов превышает 5');
+pristine.addValidator(hashtagsInput, validateHashtagsIdentity, 'Один и тот же хэш-тег не может быть использован дважды');
 pristine.addValidator(commentInput, validateComment, 'Максимальная длина 140 символов');
 
 const onFormKeydown = (evt) => {
@@ -38,9 +41,8 @@ function validateForm (evt) {
 
 function closeForm () {
   uploadOverlay.classList.add('hidden');
-  uploadFile.value = '';
-  hashtagsInput.value = '';
-  commentInput.value = '';
+  uploadForm.reset();
+  pristine.reset();
   hashtagsInput.removeEventListener('focus', cancelCloseForm);
   commentInput.removeEventListener('focus', cancelCloseForm);
   uploadForm.removeEventListener('submit', validateForm);
@@ -58,8 +60,8 @@ export function openUploadForm () {
   uploadForm.addEventListener('submit', validateForm);
 }
 
-function validateHashtags (hashtags) {
-  const hashtagsArray = hashtags.split(' ');
+function validateHashtagsFormat (hashtags) {
+  const hashtagsArray = hashtags.trim().split(' ');
   const regexp = /^#[a-zа-яё0-9]{1,19}$/i;
   let flag = true;
   if ((hashtagsArray.length > 5) || (new Set(hashtagsArray).size !== hashtagsArray.length)) {
@@ -76,6 +78,21 @@ function validateHashtags (hashtags) {
   return flag;
 }
 
+function validateHashtagsLength (hashtags) {
+  const hashtagsArray = hashtags.trim().split(' ');
+  return hashtagsArray.length <= 5;
+}
+
+function validateHashtagsIdentity (hashtags) {
+  const hashtagsArray = hashtags.trim().split(' ');
+  const set = new Set(hashtagsArray);
+  let flag = true;
+  if(set.size !== hashtagsArray.length) {
+    flag = false;
+  }
+  return flag;
+}
+
 function validateComment (comment) {
-  return comment.length <= 140;
+  return comment.length <= MAX_LENGTH_COMMENTS_TEXT;
 }

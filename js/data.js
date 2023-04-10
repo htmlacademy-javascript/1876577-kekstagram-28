@@ -1,8 +1,6 @@
 import {getRandomInteger, getRandomArrayElement, createIdgenerator} from './util.js';
 
 const PHOTO_COUNT = 25;
-// const LIKE_MIN = 15;
-// const LIKE_MAX = 15;
 const AVATAR_COUNT = 6;
 const COMMENT_COUNT = 20;
 
