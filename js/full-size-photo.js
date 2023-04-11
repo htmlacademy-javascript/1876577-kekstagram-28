@@ -12,6 +12,8 @@ const commentLoader = bigPicture.querySelector('.comments-loader');
 const commentTemplate = bigPicture.querySelector('.social__comment');
 const commentsList = bigPicture.querySelector('.social__comments');
 
+let maxCurrentCommentsCount = 5;
+
 const MAX_COUNT_COMMENTS_AT_PAGE = 5;
 const bigPictureClose = bigPicture.querySelector('.big-picture__cancel');
 
@@ -33,18 +35,19 @@ export function closeBigPicture () {
   document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
   commentLoader.removeEventListener('click', showMoreComments);
+  maxCurrentCommentsCount = 5;
 }
 
 function showMoreComments () {
   let currentVisibleCommentsCount = Array.from(commentsList.children).filter((comment) => !comment.classList.contains('hidden')).length;
   let currentTotalCommentsCount = parseInt(bigPictureCommentsCount.textContent, 10);
-  let maxCurrentCommentsCount = 5;
-  if (maxCurrentCommentsCount + (currentTotalCommentsCount - maxCurrentCommentsCount) <= currentTotalCommentsCount) {
-    maxCurrentCommentsCount += currentTotalCommentsCount - maxCurrentCommentsCount;
-  }
+
+  maxCurrentCommentsCount += 5;
   if (currentTotalCommentsCount > currentVisibleCommentsCount) {
     for (let i = currentVisibleCommentsCount; i < maxCurrentCommentsCount; i++) {
-      commentsList.children[i].classList.remove('hidden');
+      if (typeof commentsList.children[i] !== 'undefined') {
+        commentsList.children[i].classList.remove('hidden');
+      }
     }
   }
   currentVisibleCommentsCount = Array.from(commentsList.children).filter((comment) => !comment.classList.contains('hidden')).length;
