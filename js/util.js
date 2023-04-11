@@ -1,14 +1,14 @@
-function getRandomInteger(a, b) {
+export const getRandomInteger = (a, b) => {
   const lower = Math.ceil(Math.min(a, b));
   const upper = Math.floor(Math.max(a, b));
   const result = Math.random() * (upper - lower + 1) + lower;
   return Math.floor(result);
-}
+};
 
-const getRandomArrayElement = (array) =>
+export const getRandomArrayElement = (array) =>
   array[getRandomInteger(0, array.length - 1)];
 
-const createIdgenerator = () => {
+export const createIdgenerator = () => {
   let lastgenerateId = 0;
   return () => {
     lastgenerateId += 1;
@@ -16,6 +16,4 @@ const createIdgenerator = () => {
   };
 };
 
-const isEscapeKey = (evt) => evt.key === 'Escape';
-
-export {getRandomInteger, getRandomArrayElement, createIdgenerator, isEscapeKey};
+export const isEscapeKey = (evt) => evt.key === 'Escape';

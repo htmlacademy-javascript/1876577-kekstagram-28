@@ -1,7 +1,5 @@
 import { isEscapeKey } from './util.js';
-
-const bigPicture = document.querySelector('.big-picture');
-const bigPictureClose = document.querySelector('.big-picture__cancel');
+import { bigPicture } from './constants.js';
 
 const bigPictureImg = bigPicture.querySelector('.big-picture__img');
 const bigPictureLikes = bigPicture.querySelector('.likes-count');
@@ -11,10 +9,11 @@ const bigPictureDescription = bigPicture.querySelector('.social__caption');
 const commentCount = bigPicture.querySelector('.social__comment-count');
 const commentLoader = bigPicture.querySelector('.comments-loader');
 
-const commentTemplate = document.querySelector('.social__comment');
-const commentsList = document.querySelector('.social__comments');
+const commentTemplate = bigPicture.querySelector('.social__comment');
+const commentsList = bigPicture.querySelector('.social__comments');
 
-const maxCountCommentsAtPage = 5;
+const MAX_COUNT_COMMENTS_AT_PAGE = 5;
+const bigPictureClose = bigPicture.querySelector('.big-picture__cancel');
 
 const onDocumentKeydown = (evt) => {
   if (isEscapeKey(evt)) {
@@ -85,12 +84,12 @@ export function setBigPictureData (dataPhoto) {
     commentElement.querySelector('.social__picture').alt = comment.name;
     commentElement.querySelector('.social__text').textContent = comment.message;
 
-    if (currentCountCommentsAtPage === maxCountCommentsAtPage) {
+    if (currentCountCommentsAtPage === MAX_COUNT_COMMENTS_AT_PAGE) {
       commentElement.classList.add('hidden');
     }
 
     commentsList.append(commentElement);
-    if (currentCountCommentsAtPage < maxCountCommentsAtPage) {
+    if (currentCountCommentsAtPage < MAX_COUNT_COMMENTS_AT_PAGE) {
       currentCountCommentsAtPage++;
     }
   });
