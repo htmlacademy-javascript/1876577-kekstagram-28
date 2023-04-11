@@ -131,7 +131,7 @@ function onErrorMessageKeydown (evt) {
 
 function onClickErrorMessageOutside (evt) {
   if (!evt.target.closest('.error__inner')) {
-    closeSuccessMessage();
+    closeErrorMessage();
   }
 }
 
