@@ -1,25 +1,13 @@
 import { setBigPictureData, openBigPicture } from './full-size-photo.js';
-import { similarListElement } from './constants.js';
+import { similarListElement, similarPhotoTemplate } from './constants.js';
 
-
-const similarPhotoTemplate = document.querySelector('#picture').content.querySelector('.picture');
-
-export function handleOpenPopup(dataPhoto) {
+const imgFilters = document.querySelector('.img-filters');
+export const handleOpenPopup = (dataPhoto) => {
   setBigPictureData(dataPhoto);
   openBigPicture();
-}
-
-export const renderPhotos = (photos) => {
-  const similarListFragment = document.createDocumentFragment();
-
-  photos.forEach((photo) => {
-    similarListFragment.append(createSimilarPhoto(photo, handleOpenPopup));
-  });
-
-  similarListElement.append(similarListFragment);
 };
 
-export function createSimilarPhoto(dataPhoto) {
+export const createSimilarPhoto = (dataPhoto) => {
   const photoElement = similarPhotoTemplate.cloneNode(true);
   photoElement.dataset.id = dataPhoto.id;
   photoElement.querySelector('.picture__img').src = dataPhoto.url;
@@ -30,5 +18,24 @@ export function createSimilarPhoto(dataPhoto) {
     evt.preventDefault();
     handleOpenPopup(dataPhoto);
   });
+
   return photoElement;
-}
+};
+
+export const renderPhotos = (photos) => {
+
+  document.querySelectorAll('.picture').forEach((picture) => {
+    picture.remove();
+  });
+
+
+  const similarListFragment = document.createDocumentFragment();
+
+  photos.forEach((photo) => {
+    similarListFragment.append(createSimilarPhoto(photo, handleOpenPopup));
+  });
+
+  similarListElement.append(similarListFragment);
+
+  imgFilters.classList.remove('img-filters--inactive');
+};
