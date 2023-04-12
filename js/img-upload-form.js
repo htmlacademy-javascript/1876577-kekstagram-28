@@ -1,6 +1,6 @@
 import { isEscapeKey } from './util.js';
 import { uploadForm, successMessageTemplate, errorMessageTemplate, hashtagsInput, commentInput,
-  imgUploadPreview, SubmitButtonText } from './constants.js';
+  imgUploadPreview, SubmitButtonText, Scale } from './constants.js';
 import { sendData } from './load.js';
 import { setPreviewImage } from './preview-image.js';
 
@@ -23,6 +23,8 @@ const imgEffectValue = uploadForm.querySelector('.effect-level__value');
 const effectsList = uploadForm.querySelector('.effects__list');
 
 let slider;
+let isShowErrorMessage = false;
+
 const setEffect = () => {
   const effectValue = uploadOverlay.querySelector('.effects__radio:checked').value;
   const rangeValue = Number(imgEffectValue.value);
@@ -39,10 +41,10 @@ const setEffect = () => {
       filter = `invert(${rangeValue}%)`;
       break;
     case 'phobos':
-      filter = `blur(${rangeValue * 3}px)`;
+      filter = `blur(${rangeValue}px)`;
       break;
     case 'heat':
-      filter = `brightness(${rangeValue * 2 + 1})`;
+      filter = `brightness(${rangeValue})`;
       break;
     default:
       break;
@@ -104,6 +106,22 @@ const onChangeEffect = (evt) => {
       },
       step: 1
     });
+  } else if (evt.target.value === 'phobos') {
+    slider.noUiSlider.updateOptions({
+      range: {
+        min: 0,
+        max: 3
+      },
+      step: 0.1
+    });
+  } else if (evt.target.value === 'heat') {
+    slider.noUiSlider.updateOptions({
+      range: {
+        min: 1,
+        max: 3
+      },
+      step: 0.1
+    });
   } else {
     slider.noUiSlider.updateOptions({
       range: {
@@ -123,9 +141,11 @@ const onChangeEffect = (evt) => {
 };
 
 const onFormKeydown = (evt) => {
-  if (isEscapeKey(evt)) {
-    evt.preventDefault();
-    closeForm();
+  if (!isShowErrorMessage) {
+    if (isEscapeKey(evt)) {
+      evt.preventDefault();
+      closeForm();
+    }
   }
 };
 
@@ -172,6 +192,7 @@ const onClickErrorMessageOutside = (evt) => {
 
 function closeErrorMessage () {
   errorMessageElement.remove();
+  isShowErrorMessage = false;
   document.body.removeEventListener('click', onClickErrorMessageOutside);
   document.body.removeEventListener('keydown', onErrorMessageKeydown);
 }
@@ -181,6 +202,7 @@ const showErrorMessage = () => {
   document.body.addEventListener('keydown', onErrorMessageKeydown);
   document.body.addEventListener('click', onClickErrorMessageOutside);
   document.body.append(errorMessageElement);
+  isShowErrorMessage = true;
 };
 
 const blockSubmitButton = () => {
@@ -213,20 +235,21 @@ export const setUploadFormSubmit = (onSuccess) => {
 
 
 const setBiggerScale = () => {
-  if (parseInt(scaleControl.value, 10) < 100) {
-    scaleControl.value = `${parseInt(scaleControl.value, 10) + 25}%`;
+  if (parseInt(scaleControl.value, 10) < Scale.MAX) {
+    scaleControl.value = `${parseInt(scaleControl.value, 10) + Scale.STEP}%`;
   }
   imgUploadPreview.style.transform = `scale(${parseInt(scaleControl.value, 10) / 100})`;
 };
 
 const setSmallerScale = () => {
-  if (parseInt(scaleControl.value, 10) > 25) {
-    scaleControl.value = `${parseInt(scaleControl.value, 10) - 25}%`;
+  if (parseInt(scaleControl.value, 10) > Scale.MIN) {
+    scaleControl.value = `${parseInt(scaleControl.value, 10) - Scale.STEP}%`;
   }
   imgUploadPreview.style.transform = `scale(${parseInt(scaleControl.value, 10) / 100})`;
 };
 
 export function closeForm () {
+  isShowErrorMessage = false;
   uploadOverlay.classList.add('hidden');
   uploadForm.reset();
   pristine.reset();
