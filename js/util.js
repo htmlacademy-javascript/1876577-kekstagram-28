@@ -17,3 +17,13 @@ export const createIdgenerator = () => {
 };
 
 export const isEscapeKey = (evt) => evt.key === 'Escape';
+
+export const showAlert = (message) => {
+  const alertContainer = document.createElement('div');
+
+  alertContainer.classList.add('error-message');
+
+  alertContainer.textContent = message;
+
+  document.body.append(alertContainer);
+};
