@@ -2,11 +2,11 @@ import { Route, Method, ErrorText } from './constants.js';
 
 const load = (route, errorText, method = Method.GET, body = null) =>
   fetch(`${route}`, {method, body})
-    .then((responce) => {
-      if (!responce.ok) {
+    .then((response) => {
+      if (!response.ok) {
         throw new Error();
       }
-      return responce.json();
+      return response.json();
     })
     .catch(() => {
       throw new Error(errorText);

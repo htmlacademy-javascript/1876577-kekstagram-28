@@ -5,14 +5,6 @@ export const getRandomInteger = (a, b) => {
   return Math.floor(result);
 };
 
-export const createIdgenerator = () => {
-  let lastgenerateId = 0;
-  return () => {
-    lastgenerateId += 1;
-    return lastgenerateId;
-  };
-};
-
 export const isEscapeKey = (evt) => evt.key === 'Escape';
 
 export const showAlert = (message) => {

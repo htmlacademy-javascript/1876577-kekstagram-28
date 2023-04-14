@@ -22,7 +22,7 @@ const sliderElement = uploadForm.querySelector('.effect-level__slider');
 const imgEffectValue = uploadForm.querySelector('.effect-level__value');
 const effectsList = uploadForm.querySelector('.effects__list');
 
-let slider;
+let slider = null;
 let isShowErrorMessage = false;
 
 const setEffect = () => {
@@ -87,6 +87,8 @@ const initialSlider = () => {
     imgEffectValue.value = sliderElement.noUiSlider.get();
     setEffect();
   });
+
+  return sliderElement;
 };
 
 const destroySlider = () => {
@@ -98,38 +100,42 @@ const onChangeEffect = (evt) => {
   if (!slider) {
     slider = initialSlider();
   }
-  if (evt.target.value === 'marvin') {
-    slider.noUiSlider.updateOptions({
-      range: {
-        min: 0,
-        max: 100
-      },
-      step: 1
-    });
-  } else if (evt.target.value === 'phobos') {
-    slider.noUiSlider.updateOptions({
-      range: {
-        min: 0,
-        max: 3
-      },
-      step: 0.1
-    });
-  } else if (evt.target.value === 'heat') {
-    slider.noUiSlider.updateOptions({
-      range: {
-        min: 1,
-        max: 3
-      },
-      step: 0.1
-    });
-  } else {
-    slider.noUiSlider.updateOptions({
-      range: {
-        min: 0,
-        max: 1
-      },
-      step: 0.1
-    });
+  switch (evt.target.value) {
+    case 'marvin':
+      slider.noUiSlider.updateOptions({
+        range: {
+          min: 0,
+          max: 100
+        },
+        step: 1});
+      break;
+    case 'phobos':
+      slider.noUiSlider.updateOptions({
+        range: {
+          min: 0,
+          max: 3
+        },
+        step: 0.1
+      });
+      break;
+    case 'heat':
+      slider.noUiSlider.updateOptions({
+        range: {
+          min: 1,
+          max: 3
+        },
+        step: 0.1
+      });
+      break;
+    default:
+      slider.noUiSlider.updateOptions({
+        range: {
+          min: 0,
+          max: 1
+        },
+        step: 0.1
+      });
+      break;
   }
 
   slider.noUiSlider.set(100);
